@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('mahasiswas', App\Http\Controllers\MahasiswaController::class);
+    Route::resource('dosens', App\Http\Controllers\DosenController::class);
+    Route::resource('matkuls', App\Http\Controllers\MatkulController::class);
 });
 
 require __DIR__.'/auth.php';

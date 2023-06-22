@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('dosens', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->text('mata_kuliah');
+            $table->text('dosen_image');
             $table->timestamps();
         });
     }
