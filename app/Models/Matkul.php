@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Matkul extends Model
 {
+    protected $fillable = [
+        'matakuliah', 
+        'jadwal'
+    ];
     use HasFactory;
 }
