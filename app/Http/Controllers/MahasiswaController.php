@@ -116,12 +116,12 @@ class MahasiswaController extends Controller
     {
         //
 
-        $post = Mahasiswa::findOrFail($id);
+        $mahasiswa = Mahasiswa::findOrFail($id);
         
-        $delete = $post->delete($id);
+        $delete = $mahasiswa->delete($id);
 
         if($delete) {
-            // session()->flash('notif.success', 'Post deleted successfully!');
+            session()->flash('notif.success', 'Mahasiswa deleted successfully!');
             return redirect()->route('mahasiswas.index')->with('success', 'Mahasiswa deleted successfully.');
         }
 

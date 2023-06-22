@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Matkul;
 use Illuminate\Http\Request;
 
 class MatkulController extends Controller
@@ -12,6 +13,9 @@ class MatkulController extends Controller
     public function index()
     {
         //
+        return response()->view('matkuls.index', [
+            'matkuls' => Matkul::orderBy('updated_at', 'desc')->get(),
+        ]);
     }
 
     /**
@@ -20,6 +24,7 @@ class MatkulController extends Controller
     public function create()
     {
         //
+        return response()->view('matkuls.form');
     }
 
     /**
@@ -28,6 +33,20 @@ class MatkulController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'matakuliah' => 'required',
+            'jadwal' => 'required',
+        ]);
+
+        $create = Matkul::create($validated);
+
+        if($create) {
+            // add flash for the success notification
+            session()->flash('notif.success', 'Mata Kuliah created successfully!');
+            return redirect()->route('matkuls.index');
+        }
+
+        return abort(500);
     }
 
     /**
@@ -36,6 +55,9 @@ class MatkulController extends Controller
     public function show(string $id)
     {
         //
+        return response()->view('matkuls.show', [
+            'matkuls' => Matkul::findOrFail($id),
+        ]);
     }
 
     /**
@@ -44,6 +66,9 @@ class MatkulController extends Controller
     public function edit(string $id)
     {
         //
+        return response()->view('matkuls.form', [
+            'matkul' => Matkul::findOrFail($id),
+        ]);
     }
 
     /**
@@ -52,6 +77,21 @@ class MatkulController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $matkul = Matkul::findOrFail($id);
+        $validated = $request->validate([
+            'matakuliah' => 'required',
+            'jadwal' => 'required',
+        ]);
+
+        
+        $update = $matkul->update($validated);
+
+        if($update) {
+            session()->flash('notif.success', 'Mata Kuliah updated successfully!');
+            return redirect()->route('matkuls.index');
+        }
+
+        return abort(500);
     }
 
     /**
@@ -60,5 +100,15 @@ class MatkulController extends Controller
     public function destroy(string $id)
     {
         //
+        $matkul = Matkul::findOrFail($id);
+        
+        $delete = $matkul->delete($id);
+
+        if($delete) {
+            session()->flash('notif.success', 'Mata Kuliah deleted successfully!');
+            return redirect()->route('matkuls.index')->with('success', 'Mata Kuliah deleted successfully.');
+        }
+
+        return abort(500);
     }
 }
